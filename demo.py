@@ -41,20 +41,24 @@ if uploaded_file is not None and input is not None:
                                       From the attached sample dataset,give me code for visualizations that can be generated. 
                                       The sample is attached, Based on understadninf from the sample geenrate 4 visualizations.
                                        Ensure to start each piece of code with code_start and end with code_end. Do not use plt.show use streamlit specific code to display it. reverify the code before providing the output. Ensure there are no errors as this is displayed directly.
-                                        Along with this do the additional task provided by user. This is the input from user: {input}. This is a sample dataframe converted to string: {df_sample}""")
+                                        Along with this do the additional task provided by user. This is the input from user: {input}. This is a sample dataframe converted to string: {df_sample}.
+                                        If the dataframe doesn't suit the requirement for analysis,visuals or anything. Respond with this message: Provide other dataset. Keep the response as is do not change any thing in this response """)
     text = response.text
-    st.write(text)
-    matches = re.findall(r'code_start(.*?)code_end', text, re.DOTALL)
+    if "provide other" in text.lower():
+        st.write("Cannot provide analysis for the attached dataset")
+    else:
+        st.write(text)
+        matches = re.findall(r'code_start(.*?)code_end', text, re.DOTALL)
 
-    code_snippets = [match.strip() for match in matches]
+        code_snippets = [match.strip() for match in matches]
 
-    # Print the list of code snippets
-    for i, snippet in enumerate(code_snippets, 1):
-        print(f"Code snippet {i}:\n{snippet}\n")
+        # Print the list of code snippets
+        for i, snippet in enumerate(code_snippets, 1):
+            print(f"Code snippet {i}:\n{snippet}\n")
 
 
-    for i, snippet in enumerate(code_snippets, 1):
-        print(f"Executing code snippet {i}...\n")
-        execute_code_snippet(snippet)
-        print("\n" + "="*40 + "\n")
+        for i, snippet in enumerate(code_snippets, 1):
+            print(f"Executing code snippet {i}...\n")
+            execute_code_snippet(snippet)
+            print("\n" + "="*40 + "\n")
 
